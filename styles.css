@@ -8,6 +8,7 @@ body {
   flex-direction: column;
   height: 100vh;
   text-align: center;
+  overflow: hidden; /* Anti-scroll iOS */
 }
 
 header {
@@ -32,6 +33,20 @@ header {
   margin: 20px 0;
 }
 
+.page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto; /* Scroll seulement dans la page si besoin */
+}
+
+.hidden {
+  display: none;
+}
+
 button {
   background: #1e88e5;
   color: white;
@@ -41,33 +56,11 @@ button {
   cursor: pointer;
   font-size: 1.2em;
   transition: transform 0.2s;
+  margin: 10px;
 }
 
 button:hover {
   transform: scale(1.05);
-}
-
-.section {
-  flex: 1;
-  overflow-y: auto;
-  padding: 20px;
-}
-
-.hidden {
-  display: none;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 20px 0;
-}
-
-li {
-  background: #222;
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 8px;
 }
 
 footer {
@@ -80,4 +73,4 @@ footer {
   to { opacity: 1; }
 }
 
-.section { animation: fadeIn 0.5s; }
+.page { animation: fadeIn 0.5s; }
