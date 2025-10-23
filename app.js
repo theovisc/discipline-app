@@ -1,128 +1,62 @@
-let timerInterval;
-let remainingTime = 0;
-
 function showSection(id) {
   document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
+  loadChallenges(id);
 }
 
-function addLog(section) {
-  const input = document.getElementById(`${section}-input`);
-  const logs = document.getElementById(`${section}-logs`);
-  if (input.value.trim() === '') return;
-  
-  const li = document.createElement('li');
-  li.textContent = input.value;
-  const delBtn = document.createElement('button');
-  delBtn.textContent = 'Supprimer';
-  delBtn.onclick = () => { li.remove(); updateProgress(section); saveData(); };
-  li.appendChild(delBtn);
-  logs.appendChild(li);
-  
-  input.value = '';
-  updateProgress(section);
-  saveData();
-  showMotivation();
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  document.getElementById('date').textContent = now.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 }
+setInterval(updateClock, 1000);
+updateClock();
 
-function addTask() {
-  const input = document.getElementById('task-input');
-  const list = document.getElementById('task-list');
-  if (input.value.trim() === '') return;
-  
-  const li = document.createElement('li');
-  li.textContent = input.value;
-  const delBtn = document.createElement('button');
-  delBtn.textContent = 'Fait';
-  delBtn.onclick = () => { li.remove(); saveData(); };
-  li.appendChild(delBtn);
-  list.appendChild(li);
-  
-  input.value = '';
-  saveData();
-}
+const physiqueChallenges = [
+  "Bouge TOI! Fais 10 pompes lentes en contrôlant ta respiration",
+  "Lève TOI! Étire-toi pendant 5 minutes et tiens pendant les postions désagréables",
+  "Bouge TOI! Fais la planche pendant 1min",
+  "Lève TOI! Marche sur place avec des genoux hauts pendant 1 minute",
+  "Bouge TOI! Fais 50 squats en te concentrant sur la forme"
+];
 
-function updateProgress(section) {
-  const logs = document.getElementById(`${section}-logs`).children.length;
-  document.getElementById(`${section}-progress`).textContent = `Progrès: ${logs} sessions aujourd'hui`;
-}
+const mentalChallenges = [
+  "Relis une page de cours PSI* pendant 5 minutes",
+  "Résous 2 exercices simples de maths mentalement",
+  "Lis un paragraphe de ton livre Comment travailler plus efficacement",
+  "Planifie tes 3 prochaines priorités pour la journée"
+];
 
-function startTimer(seconds) {
-  stopTimer();
-  remainingTime = seconds;
-  updateTimerDisplay();
-  timerInterval = setInterval(() => {
-    remainingTime--;
-    updateTimerDisplay();
-    if (remainingTime <= 0) {
-      stopTimer();
-      alert('Temps écoulé !');
-    }
-  }, 1000);
-}
-
-function stopTimer() {
-  if (timerInterval) clearInterval(timerInterval);
-}
-
-function updateTimerDisplay() {
-  const minutes = Math.floor(remainingTime / 60);
-  const seconds = remainingTime % 60;
-  document.getElementById('time-display').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-}
-
-function saveData() {
-  const data = {
-    physique: document.getElementById('physique-logs').innerHTML,
-    mental: document.getElementById('mental-logs').innerHTML,
-    tasks: document.getElementById('task-list').innerHTML
-  };
-  localStorage.setItem('disciplineData', JSON.stringify(data));
-}
-
-function loadData() {
-  const data = JSON.parse(localStorage.getItem('disciplineData'));
-  if (data) {
-    document.getElementById('physique-logs').innerHTML = data.physique;
-    document.getElementById('mental-logs').innerHTML = data.mental;
-    document.getElementById('task-list').innerHTML = data.tasks;
-    updateProgress('physique');
-    updateProgress('mental');
-    addDeleteListeners();
-  }
-  showMotivation();
-}
-
-function addDeleteListeners() {
-  document.querySelectorAll('li button').forEach(btn => {
-    btn.onclick = () => {
-      btn.parentElement.remove();
-      updateProgress(btn.parentElement.parentElement.id.split('-')[0]);
-      saveData();
-    };
+function loadChallenges(section) {
+  const challengesList = document.getElementById(`${section}-challenges`);
+  challengesList.innerHTML = '';
+  const challenges = section === 'physique' ? physiqueChallenges : mentalChallenges;
+  challenges.forEach(challenge => {
+    const li = document.createElement('li');
+    li.textContent = challenge;
+    challengesList.appendChild(li);
   });
 }
 
-function resetData() {
-  if (confirm('Réinitialiser toutes les données ?')) {
-    localStorage.removeItem('disciplineData');
-    location.reload();
-  }
+function startChallenge(section) {
+  const challenges = section === 'physique' ? physiqueChallenges : mentalChallenges;
+  const randomChallenge = challenges[Math.floor(Math.random() * challenges.length)];
+  alert(`Défi ${section === 'physique' ? 'physique' : 'mental'} : ${randomChallenge}. Vas-y pendant 5 minutes !`);
+  showMotivation();
 }
 
 function showMotivation() {
   const motivations = [
-    'Le temps est précieux – maîtrise-le !',
-    'Chaque session compte pour ta prépa PSI*.',
-    'Discipline aujourd’hui = succès demain.',
-    'Ne gâche pas une minute de plus.'
+    "Chaque défi te rapproche de la maîtrise !",
+    "5 minutes de discipline valent mieux que l’inaction.",
+    "Ton temps est précieux – prouve-le maintenant !",
+    "Un petit pas aujourd’hui, un grand demain."
   ];
   const random = motivations[Math.floor(Math.random() * motivations.length)];
   document.getElementById('motivation').textContent = random;
 }
 
 // Chargement initial
-loadData();
 showSection('physique');
 
 // Enregistrement du Service Worker
