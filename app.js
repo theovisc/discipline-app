@@ -1,17 +1,18 @@
-function showSection(id) {
-  document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
-  loadChallenges(id);
+// Navigation entre pages
+function goToPage(page) {
+  document.getElementById('home-page').classList.add('hidden');
+  document.getElementById(page + '-page').classList.remove('hidden');
+  window.location.hash = page;
+  generateChallenge(page);
 }
 
-function updateClock() {
-  const now = new Date();
-  document.getElementById('clock').textContent = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  document.getElementById('date').textContent = now.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+function goBack() {
+  document.querySelectorAll('.page, #home-page').forEach(el => el.classList.add('hidden'));
+  document.getElementById('home-page').classList.remove('hidden');
+  window.location.hash = '';
 }
-setInterval(updateClock, 1000);
-updateClock();
 
+// Génération défi
 const physiqueChallenges = [
   "Bouge TOI! Fais 10 pompes lentes en contrôlant ta respiration",
   "Lève TOI! Étire-toi pendant 5 minutes et tiens pendant les postions désagréables",
@@ -27,23 +28,21 @@ const mentalChallenges = [
   "Planifie tes 3 prochaines priorités pour la journée"
 ];
 
-function loadChallenges(section) {
-  const challengesList = document.getElementById(`${section}-challenges`);
-  challengesList.innerHTML = '';
-  const challenges = section === 'physique' ? physiqueChallenges : mentalChallenges;
-  challenges.forEach(challenge => {
-    const li = document.createElement('li');
-    li.textContent = challenge;
-    challengesList.appendChild(li);
-  });
-}
-
-function startChallenge(section) {
+function generateChallenge(section) {
   const challenges = section === 'physique' ? physiqueChallenges : mentalChallenges;
   const randomChallenge = challenges[Math.floor(Math.random() * challenges.length)];
-  alert(`Défi ${section === 'physique' ? 'physique' : 'mental'} : ${randomChallenge}. Vas-y pendant 5 minutes !`);
+  document.getElementById(section + '-challenge').textContent = randomChallenge;
   showMotivation();
 }
+
+// Horloge
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  document.getElementById('date').textContent = now.toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+}
+setInterval(updateClock, 1000);
+updateClock();
 
 function showMotivation() {
   const motivations = [
@@ -56,12 +55,17 @@ function showMotivation() {
   document.getElementById('motivation').textContent = random;
 }
 
-// Chargement initial
-showSection('physique');
+// Init
+if (window.location.hash) {
+  const page = window.location.hash.substring(1);
+  if (page === 'physique' || page === 'mental') {
+    goToPage(page);
+  }
+}
 
-// Enregistrement du Service Worker
+// Service Worker (ajoute ?v=1 pour cache)
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').then(() => {
+  navigator.serviceWorker.register('/sw.js?v=1').then(() => {
     console.log('Service Worker enregistré');
   }).catch(err => console.error('Erreur Service Worker:', err));
 }
