@@ -17,26 +17,26 @@
     <div id="clock"></div>
     <div id="date"></div>
   </header>
-  <main>
+  <main id="home-page">
     <h2>Choisis ton camp pour les 5 prochaines minutes</h2>
     <div class="button-group">
-      <button onclick="showSection('physique')">PHYSIQUE</button>
-      <button onclick="showSection('mental')">MENTAL</button>
+      <button onclick="goToPage('physique')">PHYSIQUE</button>
+      <button onclick="goToPage('mental')">MENTAL</button>
     </div>
   </main>
   
-  <section id="physique" class="section hidden">
+  <section id="physique-page" class="page hidden">
     <h2>Mini défi physique</h2>
-    <p>Bouge-toi avec un défi simple !</p>
-    <ul id="physique-challenges"></ul>
-    <button onclick="startChallenge('physique')">Lancer un défi</button>
+    <p id="physique-challenge">Bouge-toi avec un défi simple !</p>
+    <button onclick="generateChallenge('physique')">Nouveau défi</button>
+    <button onclick="goBack()">Retour</button>
   </section>
   
-  <section id="mental" class="section hidden">
+  <section id="mental-page" class="page hidden">
     <h2>Mini défi mental</h2>
-    <p>Remets-toi au travail avec un défi rapide !</p>
-    <ul id="mental-challenges"></ul>
-    <button onclick="startChallenge('mental')">Lancer un défi</button>
+    <p id="mental-challenge">Remets-toi au travail avec un défi rapide !</p>
+    <button onclick="generateChallenge('mental')">Nouveau défi</button>
+    <button onclick="goBack()">Retour</button>
   </section>
   
   <footer>
