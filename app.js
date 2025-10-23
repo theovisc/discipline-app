@@ -63,9 +63,10 @@ if (window.location.hash) {
   }
 }
 
-// Service Worker (ajoute ?v=1 pour cache)
+// Enregistrement du Service Worker avec chemin absolu
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js?v=1').then(() => {
+  navigator.serviceWorker.register('https://theovisc.github.io/discipline-app/sw.js').then(() => {
     console.log('Service Worker enregistré');
   }).catch(err => console.error('Erreur Service Worker:', err));
 }
+
