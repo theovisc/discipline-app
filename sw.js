@@ -1,11 +1,11 @@
-const CACHE_NAME = 'discipline-cache-v1';
+const CACHE_NAME = 'discipline-cache-v2'; // Incrémente la version pour forcer le refresh
 const urlsToCache = [
-  '/index.html?v=1',
-  '/styles.css',
-  '/app.js',
-  '/manifest.json',
-  '/sw.js?v=1',
-  '/icon.png'
+  'https://theovisc.github.io/discipline-app/index.html',
+  'https://theovisc.github.io/discipline-app/styles.css',
+  'https://theovisc.github.io/discipline-app/app.js',
+  'https://theovisc.github.io/discipline-app/manifest.json',
+  'https://theovisc.github.io/discipline-app/sw.js',
+  'https://theovisc.github.io/discipline-app/icon.png'
 ];
 
 self.addEventListener('install', event => {
