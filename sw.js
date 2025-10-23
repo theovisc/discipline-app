@@ -1,9 +1,10 @@
 const CACHE_NAME = 'discipline-cache-v1';
 const urlsToCache = [
-  '/index.html',
+  '/index.html?v=1',
   '/styles.css',
   '/app.js',
   '/manifest.json',
+  '/sw.js?v=1',
   '/icon.png'
 ];
 
