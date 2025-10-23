@@ -14,45 +14,32 @@
   <header>
     <h1>Maître du Temps</h1>
     <p>Ne gâche plus ton temps précieux</p>
+    <div id="clock"></div>
+    <div id="date"></div>
   </header>
-  <nav>
-    <button onclick="showSection('physique')">Physique</button>
-    <button onclick="showSection('mental')">Mental</button>
-    <button onclick="showSection('temps')">Temps</button>
-  </nav>
+  <main>
+    <h2>Choisis ton camp pour les 5 prochaines minutes</h2>
+    <div class="button-group">
+      <button onclick="showSection('physique')">PHYSIQUE</button>
+      <button onclick="showSection('mental')">MENTAL</button>
+    </div>
+  </main>
   
-  <section id="physique" class="section">
-    <h2>Physique (Musculation & Étirements)</h2>
-    <input type="text" id="physique-input" placeholder="Ex: 3 séries de pompes">
-    <button onclick="addLog('physique')">Ajouter</button>
-    <ul id="physique-logs"></ul>
-    <div id="physique-progress">Progrès: 0 sessions aujourd'hui</div>
+  <section id="physique" class="section hidden">
+    <h2>Mini défi physique</h2>
+    <p>Bouge-toi avec un défi simple !</p>
+    <ul id="physique-challenges"></ul>
+    <button onclick="startChallenge('physique')">Lancer un défi</button>
   </section>
   
   <section id="mental" class="section hidden">
-    <h2>Mental (Prépa PSI*)</h2>
-    <input type="text" id="mental-input" placeholder="Ex: Révision maths 45 min">
-    <button onclick="addLog('mental')">Ajouter</button>
-    <ul id="mental-logs"></ul>
-    <div id="mental-progress">Progrès: 0 sessions aujourd'hui</div>
-  </section>
-  
-  <section id="temps" class="section hidden">
-    <h2>Gestion du Temps</h2>
-    <input type="text" id="task-input" placeholder="Ajouter une tâche">
-    <button onclick="addTask()">Ajouter Tâche</button>
-    <ul id="task-list"></ul>
-    <div id="timer">
-      <h3>Timer Pomodoro</h3>
-      <div id="time-display">25:00</div>
-      <button onclick="startTimer(25 * 60)">Démarrer Travail</button>
-      <button onclick="startTimer(5 * 60)">Démarrer Pause</button>
-      <button onclick="stopTimer()">Arrêter</button>
-    </div>
+    <h2>Mini défi mental</h2>
+    <p>Remets-toi au travail avec un défi rapide !</p>
+    <ul id="mental-challenges"></ul>
+    <button onclick="startChallenge('mental')">Lancer un défi</button>
   </section>
   
   <footer>
-    <button onclick="resetData()">Réinitialiser Données</button>
     <p id="motivation"></p>
   </footer>
   
